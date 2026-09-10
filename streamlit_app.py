@@ -1,151 +1,220 @@
 import streamlit as st
 import pandas as pd
-import math
-from pathlib import Path
+import datetime
+import time
+from PIL import Image
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+st.write(
+    "# 🤯 1. Nadpis (Title)"
 )
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
-
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
-
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
-
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
-
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
-
-    return gdp_df
-
-gdp_df = get_gdp_data()
-
-# -----------------------------------------------------------------------------
-# Draw the actual page
-
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
-
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
+st.write(
+    "# 🔠 2. Text (Text)"
 )
 
-''
-''
 
 
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
+st.write(
+    "# ▶️ 3. Tlačidlo (Button)"
+)
 
-st.header(f'GDP in {to_year}', divider='gray')
 
-''
 
-cols = st.columns(4)
+st.write(
+    "# 🛝 4. Posuvník (slider)"
+)
 
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
 
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
 
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
+st.write(
+    "# ✍ 5. Textový vstup (Text Input)"
+)
 
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+
+
+st.write(
+    "# ☑️ 6. Zaškrtávacie políčko. (Checkbox)"
+)
+
+
+
+st.write(
+    "# 🔽 8. Rozbaľovací zoznam s možnosťami. (Selectbox)"
+)
+
+
+
+st.write(
+    "# 📁 9. Upload súborov. (File uploader)"
+)
+
+
+st.write(
+    "# 🔥 10. Upload CSV súborov. (File CSV uploader)"
+)
+
+
+st.write(
+    "# 🏁 11. Upload obrázkov. (File image uploader)"
+)
+
+
+
+st.write(
+    "# 📥 12. Tlačidlo na stiahnutie. (Download button)"
+)
+
+
+
+st.write(
+    "# 📻 13. Výber jednej možnosti. (Radio)"
+)
+
+st.write(
+    "# 📅 14. Výber dátumu. (Date input)"
+)
+
+
+st.write(
+    "# 🕔 15. Výber času. (Time input)"
+)
+
+
+
+st.write(
+    "# 🅰 16. Vstup dlhšieho textu. (Text area)"
+)
+
+
+
+st.write(
+    "# 🔢 17. Vstup číselnej hodnoty. (Number Input)"
+)
+
+
+
+st.write(
+    "# 🎚️ 18. Posuvník s výberom. (Select Slider)"
+)
+
+
+
+st.write(
+    "# 🔴 19. Výber farby (Color picker)"
+)
+
+
+
+st.write(
+    "# ⏳ 20. Indikátor progresu (Progress)"
+)
+
+
+
+st.write(
+    "# 📐 21. Zobrazenie LaTeXu (matematické výrazy) (latex)"
+)
+
+
+
+st.write(
+    "# 🌍 22. Zobrazenie kódu s formátovaním (code)"
+)
+
+
+
+st.write(
+    "# 🌐 23. Zobrazenie JSON dát (json)"
+)
+
+
+
+st.write(
+    "# ➡️ 24. Dynamický widget (všestranný) (write)"
+)
+
+
+
+st.write(
+    "# 📏 25. Zobrazenie kľúčových metrik (metric)"
+)
+
+
+
+st.write(
+    "# ❌ 26. Zobrazenie chybovej správy (error)"
+)
+
+
+
+st.write(
+    "# ✅ 27. Zobrazenie úspešnej správy (success)"
+)
+
+
+
+st.write(
+    "# ⚠️ 28. Zobrazenie varovnej správy (warning)"
+)
+
+
+
+st.write(
+    "# 🆗 29. Zobrazenie informatívnej správy (info)"
+)
+
+
+
+
+st.write(
+    "# ❗ 30. Zobrazenie výnimky (chyby v kóde) (exception)"
+)
+
+
+
+st.write(
+    "# 🌀 31. Zobrazenie spinneru počas načítavania (spinner)"
+)
+
+
+
+st.write(
+    "# 📝 32. Zobrazenie textovej poznámky (caption)"
+)
+
+
+
+st.write(
+    "# 🖼️ 33. Zobrazenie obrázkov (image)"
+)
+
+
+
+st.write(
+    "# 🎞️ 34. Zobrazenie videa/audio (video/audio)"
+)
+
+
+
+st.write(
+    "# 🏛️ 35. Rozdelenie obrazovky do stĺpcov (columns)"
+)
+
+
+st.write(
+    "# 📑 36. Vytváranie záložiek/tabov (tabs)"
+)
+
+
+st.write(
+    "# 🚀 37. Rozbalovací blok (expander)"
+)
+
+
+
+st.write(
+    "# 📈 38. Zobrazenie grafov v Matplotlib (pyplot)"
+)
+
