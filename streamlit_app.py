@@ -103,13 +103,13 @@ st.write(
 
 volba = st.radio("Valaszd ki a kedvenc gyikodat: ", ("Fürge gyík","Hidasgyík","Baziliszkusz gyík"))
 if volba == "Fürge gyík":
-    obr1 = Image.open("data\\furgegyik.jpg")
+    obr1 = Image.open("data/furgegyik.jpg")
     st.image(obr1, caption = "Fürge gyík", use_container_width=True)
 elif volba == "Hidasgyík":
-    obr1 = Image.open("data\\Hidasgyik.jpg")
+    obr1 = Image.open("data/Hidasgyik.jpg")
     st.image(obr1, caption = "Hidasgyík", use_container_width=True)
 else:
-    obr1 = Image.open("data\\Baziliszkuszgyik.jpg")
+    obr1 = Image.open("data/Baziliszkuszgyik.jpg")
     st.image(obr1, caption = "Baziliszkusz gyík", use_container_width=True)
 
 st.write(
