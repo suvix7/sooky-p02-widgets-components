@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 import time
 from PIL import Image
+import matplotlib.pyplot as plt
 
 st.write(
     "# 🤯 1. Nadpis (Title)"
@@ -112,149 +113,225 @@ else:
     obr1 = Image.open("data/Baziliszkuszgyik.jpg")
     st.image(obr1, caption = "Baziliszkusz gyík", use_container_width=True)
 
+vybrane_moznosti = st.multiselect(
+    "Vyberte svoje oblubene filmy",
+    ["Matrix","Pan prstenov","Star Wars","Inception"],
+    placeholder="Vyberte film, ktory sa vam paci"
+)
+
+st.write(f"Vybrali ste: {', '.join(vybrane_moznosti)}")
+
 st.write(
     "# 📅 14. Výber dátumu. (Date input)"
 )
 
+datum = st.date_input(
+    "Vyberte datum",
+    datetime.datetime.now()
+    #datetime.date(2026,5,31)
+)
+st.write("Vybrali ste datum: ", datum)
 
 st.write(
     "# 🕔 15. Výber času. (Time input)"
 )
 
+cas = st.time_input(
+    "Zadajte cas",
+    datetime.time(10,30,30)
+)
+st.write("Vybrali ste cas: ", cas)
 
 
 st.write(
     "# 🅰 16. Vstup dlhšieho textu. (Text area)"
 )
 
+text = st.text_area(
+    "Napiste svoj nazor na film",
+    "Zadajte text sem"
+)
+st.write("Vas nazor je: ", text)
 
 
 st.write(
     "# 🔢 17. Vstup číselnej hodnoty. (Number Input)"
 )
-
+hodnotenie = st.number_input(
+    "Zadajte hodnotenie filmy (od 1 do  10)",
+    min_value=1,
+    max_value=10,
+    value=5,
+)
+st.write(f"Vase hodnotenie {hodnotenie}/10")
 
 
 st.write(
     "# 🎚️ 18. Posuvník s výberom. (Select Slider)"
 )
-
-
+stupnica = st.select_slider(
+    "Ako velmi sa vam pacil film?",
+    options=["Hrozne","Slabe","Priemerne","Dobre","Vyborne"],
+    value="Dobre"
+)
+st.write(f"Vase hodnotenie {stupnica}")
 
 st.write(
     "# 🔴 19. Výber farby (Color picker)"
 )
-
+farba= st.color_picker(
+    "Vyberte farbu pozadia",
+    "#00F900"
+)
+st.write(f"Vasa farba {farba}")
 
 
 st.write(
     "# ⏳ 20. Indikátor progresu (Progress)"
 )
+progress = st.progress(0)
 
+# for i in range(100):
+#     time.sleep(0.05)
+#     progress.progress(i+1)
 
 
 st.write(
     "# 📐 21. Zobrazenie LaTeXu (matematické výrazy) (latex)"
 )
-
+st.latex(r'''
+    a^2 + b^2 = c^2
+''')
 
 
 st.write(
     "# 🌍 22. Zobrazenie kódu s formátovaním (code)"
 )
-
+st.code('''
+def ahoj():
+    print("Ahoj, Streamlit!")
+''', language='python')
 
 
 st.write(
     "# 🌐 23. Zobrazenie JSON dát (json)"
 )
-
+data = {
+    'meno': 'Peter',
+    'vek': 30,
+    'zamestnanie': 'programator'
+}
+st.json(data)
 
 
 st.write(
     "# ➡️ 24. Dynamický widget (všestranný) (write)"
 )
-
+st.write("Text")
+st.write(123)
+st.write({'kluc':'hodnota'})
 
 
 st.write(
     "# 📏 25. Zobrazenie kľúčových metrik (metric)"
 )
-
+st.metric(label="Teplota", value="24℃", delta="-2℃")
 
 
 st.write(
     "# ❌ 26. Zobrazenie chybovej správy (error)"
 )
-
+st.error("Chybove hlasenie!")
 
 
 st.write(
     "# ✅ 27. Zobrazenie úspešnej správy (success)"
 )
-
+st.success("Uspech!")
 
 
 st.write(
     "# ⚠️ 28. Zobrazenie varovnej správy (warning)"
 )
-
+st.warning("Varovanie!")
 
 
 st.write(
     "# 🆗 29. Zobrazenie informatívnej správy (info)"
 )
-
+st.info("Informacia.")
 
 
 
 st.write(
     "# ❗ 30. Zobrazenie výnimky (chyby v kóde) (exception)"
 )
-
+try:
+    1/0
+except ZeroDivisionError as e:
+    st.exception(e)
 
 
 st.write(
     "# 🌀 31. Zobrazenie spinneru počas načítavania (spinner)"
 )
-
+with st.spinner('Cakajte prosim...'):
+    time.sleep(5)
+st.success('Hotovo')
 
 
 st.write(
     "# 📝 32. Zobrazenie textovej poznámky (caption)"
 )
-
+st.caption("Toto je vysvetlenie")
 
 
 st.write(
     "# 🖼️ 33. Zobrazenie obrázkov (image)"
 )
-
+st.image("https://ng.24.hu/uploads/2018/11/6669f569c5a49865541630331527608-1058x705.jpg")
 
 
 st.write(
     "# 🎞️ 34. Zobrazenie videa/audio (video/audio)"
 )
-
+st.video("https://www.youtube.com/watch?v=5Aep2ZFLSIo&t=51s")
 
 
 st.write(
     "# 🏛️ 35. Rozdelenie obrazovky do stĺpcov (columns)"
 )
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.write("Stlpec 1")
+with col2:
+    st.write("Stlpec 2")
+with col3:
+    st.write("Stlpec 3")
 
 
 st.write(
     "# 📑 36. Vytváranie záložiek/tabov (tabs)"
 )
-
+tab1, tab2, tab3 = st.tabs(["Tab 1","Tab 2","Tab 3"])
+with tab1:
+    st.write("Obsah pre zalozku 1")
+with tab2:
+    st.write("Obsah pre zalozku 2")
+with tab3:
+    st.write("Obsah pre zalozku 3")
 
 st.write(
     "# 🚀 37. Rozbalovací blok (expander)"
 )
-
+with st.expander("Kliknite sem pre viac info"):
+    st.write("Toto je rozbaleny obsah.")
 
 
 st.write(
     "# 📈 38. Zobrazenie grafov v Matplotlib (pyplot)"
 )
+fig, ax = plt.subplots()
+ax.plot([1,2,3,4],[1,4,9,16])
 
+st.pyplot(fig)
